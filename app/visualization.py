@@ -62,7 +62,10 @@ def draw_results(img, results, cam_map, class_names):
                     COLORS["text"], 2)
 
         # Leader line
-        line_end = (x2 + 120, y2 + 40)
+        line_end = (
+            min(x2 + 120, img.shape[1] - 150),
+            min(y2 + 40, img.shape[0] - 20)
+        )
         cv2.line(img_vis, (x2, y2), line_end, COLORS["box"], 2)
 
         # Explanation text
