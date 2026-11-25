@@ -1,0 +1,19 @@
+
+# PIDray - Core dependencies
+
+# ML inference
+ultralytics
+
+# Image processing
+opencv-python
+numpy
+matplotlib
+Pillow
+
+# Backend API
+fastapi
+uvicorn[standard]
+python-multipart
+
+# Utilities
+pydantic
