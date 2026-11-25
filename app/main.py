@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 from fastapi import FastAPI, File, HTTPException, UploadFile, Query
 from ultralytics import YOLO
+from app.visualization import draw_detections, encode_image
 
 
 # --------------------------------------------------
@@ -82,7 +83,8 @@ def model_info():
 @app.post("/predict")
 def predict(
     file: UploadFile = File(...),
-    conf: float = Query(default=0.25, ge=0.0, le=1.0)
+    conf: float = Query(default=0.25, ge=0.0, le=1.0),
+    include_image: bool = Query(default=True)
 ):
     # Check filename extension
     allowed_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
@@ -166,6 +168,18 @@ def predict(
                 ]
             })
 
+    annotated_image = None
+
+    if include_image:
+        try:
+            visual = draw_detections(result)
+            annotated_image = encode_image(visual)
+        except Exception as exc:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Visualization failed: {str(exc)}"
+            )
+
     return {
         "success": True,
         "image_size": {
@@ -174,5 +188,6 @@ def predict(
         },
         "detections": detections,
         "detection_count": len(detections),
-        "inference_time_ms": round(inference_time_ms, 2)
+        "inference_time_ms": round(inference_time_ms, 2),
+        "annotated_image": annotated_image
     }
