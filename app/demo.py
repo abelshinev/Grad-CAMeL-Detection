@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from inference import Detector
-from visualization import draw_results
+from visualization_for_demo import draw_results
 
 detector = Detector("models/last.pt")
 

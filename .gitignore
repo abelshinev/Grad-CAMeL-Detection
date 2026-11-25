@@ -2,4 +2,5 @@ train/
 PIDray_YOLO
 venv/
 runs/detect/saved_runs/detect_v1/weights/epoch*
-__pycache__/*
+app/__pycache__/
+tests/*
